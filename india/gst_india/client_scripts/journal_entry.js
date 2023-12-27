@@ -3,7 +3,7 @@ frappe.ui.form.on("Journal Entry", {
 });
 
 async function set_gstin_options(frm) {
-    const options = await india_compliance.get_gstin_options(frm.doc.company);
+    const options = await india.get_gstin_options(frm.doc.company);
 	frm.get_field("company_gstin").set_data(options);
 
     frm.set_value("company_gstin", options.length === 1 ? options[0] : "");
@@ -24,7 +24,7 @@ async function toggle_company_gstin(frm, taxes_table, account_head) {
 
 async function contains_gst_account(frm, taxes_table, account_field) {
     if (!frm.gst_accounts || frm.company !== frm.doc.company) {
-        frm.gst_accounts = await india_compliance.get_account_options(frm.doc.company);
+        frm.gst_accounts = await india.get_account_options(frm.doc.company);
         frm.company = frm.doc.company;
     }
 

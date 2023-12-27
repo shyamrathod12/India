@@ -1,4 +1,4 @@
-{% include "india_compliance/gst_india/client_scripts/party.js" %}
+{% include "india/gst_india/client_scripts/party.js" %}
 
 const DOCTYPE = "Customer";
 

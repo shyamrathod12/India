@@ -1,6 +1,6 @@
 frappe.ui.form.on('Item', {
 	onload: function(frm) {
-		india_compliance.set_hsn_code_query(frm.get_field("gst_hsn_code"));
+		india.set_hsn_code_query(frm.get_field("gst_hsn_code"));
 	},
 
 	gst_hsn_code: function(frm) {

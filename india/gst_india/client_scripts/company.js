@@ -1,4 +1,4 @@
-{% include "india_compliance/gst_india/client_scripts/party.js" %}
+{% include "india/gst_india/client_scripts/party.js" %}
 
 const DOCTYPE = "Company";
 
@@ -25,7 +25,7 @@ frappe.ui.form.on(DOCTYPE, {
         if (frm.doc.country !== "India") return;
 
         frappe.call({
-            method: "india_compliance.gst_india.overrides.company.make_default_tax_templates",
+            method: "india.gst_india.overrides.company.make_default_tax_templates",
             args: { company: frm.doc.name },
             callback: function () {
                 frappe.msgprint(__("Default Tax Templates created"));

@@ -80,7 +80,7 @@ async function _get_account_options(company) {
     }
 
     if (!frappe.flags.gst_accounts[company]) {
-        frappe.flags.gst_accounts[company] = await india_compliance.get_account_options(
+        frappe.flags.gst_accounts[company] = await india.get_account_options(
             company
         );
     }

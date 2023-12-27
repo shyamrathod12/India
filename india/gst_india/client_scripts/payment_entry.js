@@ -15,7 +15,7 @@ frappe.ui.form.on("Payment Entry", {
 	party: function (frm) {
 		update_gst_details(
 			frm,
-			"india_compliance.gst_india.overrides.payment_entry.update_party_details"
+			"india.gst_india.overrides.payment_entry.update_party_details"
 		);
 	},
 
@@ -47,5 +47,5 @@ async function update_gst_details(frm, method) {
 		company: frm.doc.company,
 	};
 
-	india_compliance.fetch_and_update_gst_details(frm, args, method);
+	india.fetch_and_update_gst_details(frm, args, method);
 }

@@ -25,7 +25,7 @@ frappe.ui.form.on("Sales Invoice", {
                 __("Generate"),
                 () => {
                     frappe.call({
-                        method: "india_compliance.gst_india.utils.e_invoice.generate_e_invoice",
+                        method: "india.gst_india.utils.e_invoice.generate_e_invoice",
                         args: { docname: frm.doc.name, force: true },
                         callback: () => {
                             return frm.refresh();
@@ -58,7 +58,7 @@ frappe.ui.form.on("Sales Invoice", {
         frappe.show_alert(__("Attempting to generate e-Invoice"));
 
         await frappe.xcall(
-            "india_compliance.gst_india.utils.e_invoice.generate_e_invoice",
+            "india.gst_india.utils.e_invoice.generate_e_invoice",
             {
                 docname: frm.doc.name,
                 throw: false,
@@ -76,7 +76,7 @@ frappe.ui.form.on("Sales Invoice", {
                 resolve();
             };
 
-            if (!is_irn_cancellable(frm) || !india_compliance.is_e_invoice_enabled()) {
+            if (!is_irn_cancellable(frm) || !india.is_e_invoice_enabled()) {
                 const d = frappe.warn(
                     __("Cannot Cancel IRN"),
                     __(
@@ -122,7 +122,7 @@ function show_cancel_e_invoice_dialog(frm, callback) {
             : __("Cancel IRN"),
         primary_action(values) {
             frappe.call({
-                method: "india_compliance.gst_india.utils.e_invoice.cancel_e_invoice",
+                method: "india.gst_india.utils.e_invoice.cancel_e_invoice",
                 args: {
                     docname: frm.doc.name,
                     values: values,
@@ -146,7 +146,7 @@ function show_mark_e_invoice_as_cancelled_dialog(frm) {
         primary_action_label: __("Update"),
         primary_action(values) {
             frappe.call({
-                method: "india_compliance.gst_india.utils.e_invoice.mark_e_invoice_as_cancelled",
+                method: "india.gst_india.utils.e_invoice.mark_e_invoice_as_cancelled",
                 args: {
                     doctype: frm.doctype,
                     docname: frm.doc.name,
@@ -213,7 +213,7 @@ function get_cancel_e_invoice_dialog_fields(frm, manual_cancel = false) {
 
 function is_e_invoice_applicable(frm) {
     return (
-        india_compliance.is_e_invoice_enabled() &&
+        india.is_e_invoice_enabled() &&
         frm.doc.docstatus == 1 &&
         frm.doc.company_gstin &&
         frm.doc.company_gstin != frm.doc.billing_address_gstin &&

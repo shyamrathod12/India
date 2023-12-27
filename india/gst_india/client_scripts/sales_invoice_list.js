@@ -29,7 +29,7 @@ frappe.listview_settings[DOCTYPE].onload = function (list_view) {
         );
     }
 
-    if (india_compliance.is_e_invoice_enabled())
+    if (india.is_e_invoice_enabled())
         add_bulk_action_for_invoices(
             list_view,
             __("Enqueue Bulk e-Invoice Generation"),
@@ -48,11 +48,11 @@ function add_bulk_action_for_invoices(list_view, label, callback, allowed_status
 
 async function generate_e_waybill_json(docnames) {
     const ewb_data = await frappe.xcall(
-        "india_compliance.gst_india.utils.e_waybill.generate_e_waybill_json",
+        "india.gst_india.utils.e_waybill.generate_e_waybill_json",
         { doctype: DOCTYPE, docnames }
     );
 
-    india_compliance.trigger_file_download(ewb_data, get_e_waybill_file_name());
+    india.trigger_file_download(ewb_data, get_e_waybill_file_name());
 }
 
 function show_bulk_update_transporter_dialog(docnames) {
@@ -63,7 +63,7 @@ function show_bulk_update_transporter_dialog(docnames) {
             d.hide();
 
             frappe.call({
-                method: "india_compliance.gst_india.utils.e_waybill.bulk_update_transporter_in_docs",
+                method: "india.gst_india.utils.e_waybill.bulk_update_transporter_in_docs",
                 args: {
                     doctype: DOCTYPE,
                     docnames,
@@ -78,14 +78,14 @@ function show_bulk_update_transporter_dialog(docnames) {
 
 async function enqueue_bulk_e_waybill_generation(docnames) {
     enqueue_bulk_generation(
-        "india_compliance.gst_india.utils.e_waybill.enqueue_bulk_e_waybill_generation",
+        "india.gst_india.utils.e_waybill.enqueue_bulk_e_waybill_generation",
         { doctype: DOCTYPE, docnames }
     );
 }
 
 async function enqueue_bulk_e_invoice_generation(docnames) {
     enqueue_bulk_generation(
-        "india_compliance.gst_india.utils.e_invoice.enqueue_bulk_e_invoice_generation",
+        "india.gst_india.utils.e_invoice.enqueue_bulk_e_invoice_generation",
         { docnames }
     );
 }

@@ -25,7 +25,7 @@ frappe.ui.form.on(DOCTYPE, {
     },
 
     refresh(frm) {
-        india_compliance.set_reconciliation_status(frm, "bill_no");
+        india.set_reconciliation_status(frm, "bill_no");
 
         if (
             frm.doc.docstatus !== 1 ||
@@ -38,7 +38,7 @@ frappe.ui.form.on(DOCTYPE, {
             __("Bill of Entry"),
             () => {
                 frappe.model.open_mapped_doc({
-                    method: "india_compliance.gst_india.doctype.bill_of_entry.bill_of_entry.make_bill_of_entry",
+                    method: "india.gst_india.doctype.bill_of_entry.bill_of_entry.make_bill_of_entry",
                     frm: frm,
                 });
             },

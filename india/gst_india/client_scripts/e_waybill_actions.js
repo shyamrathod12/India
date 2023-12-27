@@ -6,7 +6,7 @@ function setup_e_waybill_actions(doctype) {
             frm.set_value("gst_vehicle_type", get_vehicle_type(frm.doc));
         },
         setup(frm) {
-            if (!india_compliance.is_api_enabled()) return;
+            if (!india.is_api_enabled()) return;
 
             frappe.realtime.on("e_waybill_pdf_update", message => {
                 frappe.model.sync_docinfo(message);
@@ -64,7 +64,7 @@ function setup_e_waybill_actions(doctype) {
                 return;
             }
 
-            if (!india_compliance.is_api_enabled()) {
+            if (!india.is_api_enabled()) {
                 return;
             }
 
@@ -135,7 +135,7 @@ function setup_e_waybill_actions(doctype) {
                 frm.doctype != "Sales Invoice" ||
                 !has_e_waybill_threshold_met(frm) ||
                 frm.doc.ewaybill ||
-                !india_compliance.is_api_enabled() ||
+                !india.is_api_enabled() ||
                 !gst_settings.auto_generate_e_waybill ||
                 is_e_invoice_applicable(frm) ||
                 !is_e_waybill_applicable(frm)
@@ -145,13 +145,13 @@ function setup_e_waybill_actions(doctype) {
             frappe.show_alert(__("Attempting to generate e-Waybill"));
 
             await frappe.xcall(
-                "india_compliance.gst_india.utils.e_waybill.generate_e_waybill",
+                "india.gst_india.utils.e_waybill.generate_e_waybill",
                 { doctype: frm.doctype, docname: frm.doc.name }
             );
         },
         before_cancel(frm) {
             // if IRN is present, e-Waybill gets cancelled in e-Invoice action
-            if (!india_compliance.is_api_enabled() || frm.doc.irn || !frm.doc.ewaybill)
+            if (!india.is_api_enabled() || frm.doc.irn || !frm.doc.ewaybill)
                 return;
 
             frappe.validated = false;
@@ -189,7 +189,7 @@ function fetch_e_waybill_data(frm, args, callback) {
     if (!args) args = {};
 
     frappe.call({
-        method: "india_compliance.gst_india.utils.e_waybill.fetch_e_waybill_data",
+        method: "india.gst_india.utils.e_waybill.fetch_e_waybill_data",
         args: { doctype: frm.doctype, docname: frm.doc.name, ...args },
         callback,
     });
@@ -198,7 +198,7 @@ function fetch_e_waybill_data(frm, args, callback) {
 function show_generate_e_waybill_dialog(frm) {
     const generate_action = values => {
         frappe.call({
-            method: "india_compliance.gst_india.utils.e_waybill.generate_e_waybill",
+            method: "india.gst_india.utils.e_waybill.generate_e_waybill",
             args: {
                 doctype: frm.doctype,
                 docname: frm.doc.name,
@@ -212,7 +212,7 @@ function show_generate_e_waybill_dialog(frm) {
 
     const json_action = async values => {
         const ewb_data = await frappe.xcall(
-            "india_compliance.gst_india.utils.e_waybill.generate_e_waybill_json",
+            "india.gst_india.utils.e_waybill.generate_e_waybill_json",
             {
                 doctype: frm.doctype,
                 docnames: frm.doc.name,
@@ -221,10 +221,10 @@ function show_generate_e_waybill_dialog(frm) {
         );
 
         frm.refresh();
-        india_compliance.trigger_file_download(ewb_data, get_e_waybill_file_name(frm.doc.name));
+        india.trigger_file_download(ewb_data, get_e_waybill_file_name(frm.doc.name));
     };
 
-    const api_enabled = india_compliance.is_api_enabled();
+    const api_enabled = india.is_api_enabled();
 
     const d = get_generate_e_waybill_dialog({
         title: __("Generate e-Waybill"),
@@ -445,7 +445,7 @@ function show_fetch_if_generated_dialog(frm) {
         primary_action_label: __("Fetch"),
         primary_action(values) {
             frappe.call({
-                method: "india_compliance.gst_india.utils.e_waybill.find_matching_e_waybill",
+                method: "india.gst_india.utils.e_waybill.find_matching_e_waybill",
                 args: {
                     doctype: frm.doctype,
                     docname: frm.doc.name,
@@ -485,7 +485,7 @@ function show_mark_e_waybill_as_generated_dialog(frm) {
         primary_action_label: __("Update"),
         primary_action(values) {
             frappe.call({
-                method: "india_compliance.gst_india.utils.e_waybill.mark_e_waybill_as_generated",
+                method: "india.gst_india.utils.e_waybill.mark_e_waybill_as_generated",
                 args: {
                     doctype: frm.doctype,
                     docname: frm.doc.name,
@@ -509,7 +509,7 @@ function show_cancel_e_waybill_dialog(frm, callback) {
         primary_action_label: __("Cancel"),
         primary_action(values) {
             frappe.call({
-                method: "india_compliance.gst_india.utils.e_waybill.cancel_e_waybill",
+                method: "india.gst_india.utils.e_waybill.cancel_e_waybill",
                 args: {
                     doctype: frm.doctype,
                     docname: frm.doc.name,
@@ -543,7 +543,7 @@ function show_mark_e_waybill_as_cancelled_dialog(frm) {
         primary_action_label: __("Update"),
         primary_action(values) {
             frappe.call({
-                method: "india_compliance.gst_india.utils.e_waybill.mark_e_waybill_as_cancelled",
+                method: "india.gst_india.utils.e_waybill.mark_e_waybill_as_cancelled",
                 args: {
                     doctype: frm.doctype,
                     docname: frm.doc.name,
@@ -675,7 +675,7 @@ function show_update_vehicle_info_dialog(frm) {
         primary_action_label: __("Update"),
         primary_action(values) {
             frappe.call({
-                method: "india_compliance.gst_india.utils.e_waybill.update_vehicle_info",
+                method: "india.gst_india.utils.e_waybill.update_vehicle_info",
                 args: {
                     doctype: frm.doctype,
                     docname: frm.doc.name,
@@ -737,7 +737,7 @@ function show_update_transporter_dialog(frm) {
         primary_action_label: __("Update"),
         primary_action(values) {
             frappe.call({
-                method: "india_compliance.gst_india.utils.e_waybill.update_transporter",
+                method: "india.gst_india.utils.e_waybill.update_transporter",
                 args: {
                     doctype: frm.doctype,
                     docname: frm.doc.name,
@@ -909,7 +909,7 @@ async function show_extend_validity_dialog(frm) {
         primary_action_label: __("Extend"),
         primary_action(values) {
             frappe.call({
-                method: "india_compliance.gst_india.utils.e_waybill.extend_validity",
+                method: "india.gst_india.utils.e_waybill.extend_validity",
                 args: {
                     doctype: frm.doctype,
                     docname: frm.doc.name,
@@ -1044,7 +1044,7 @@ function update_generation_dialog(dialog, doc) {
 }
 
 function get_primary_action_label_for_generation(doc) {
-    const label = india_compliance.is_api_enabled()
+    const label = india.is_api_enabled()
         ? __("Generate")
         : __("Download JSON");
 

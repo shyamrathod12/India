@@ -33,7 +33,7 @@ function update_gstin_in_other_documents(doctype) {
 
             frappe.confirm(message, function () {
                 frappe.call({
-                    method: "india_compliance.gst_india.overrides.party.update_docs_with_previous_gstin",
+                    method: "india.gst_india.overrides.party.update_docs_with_previous_gstin",
                     args: {
                         gstin: gstin || "",
                         gst_category,
@@ -118,10 +118,10 @@ function set_gstin_options_and_status(doctype) {
     frappe.ui.form.on(doctype, {
         refresh(frm) {
             set_gstin_options(frm);
-            india_compliance.set_gstin_status(frm.get_field("gstin"));
+            india.set_gstin_status(frm.get_field("gstin"));
         },
         gstin(frm) {
-            india_compliance.set_gstin_status(frm.get_field("gstin"));
+            india.set_gstin_status(frm.get_field("gstin"));
         },
     });
 }
@@ -132,7 +132,7 @@ async function set_gstin_options(frm) {
     frm._gstin_options_set_for = frm.doc.name;
     const field = frm.get_field("gstin");
     field.df.ignore_validation = true;
-    field.set_data(await india_compliance.get_gstin_options(frm.doc.name, frm.doctype));
+    field.set_data(await india.get_gstin_options(frm.doc.name, frm.doctype));
 }
 
 
@@ -141,7 +141,7 @@ function set_gst_category(doctype) {
         gstin(frm) {
             frm.set_value(
                 "gst_category",
-                india_compliance.guess_gst_category(frm.doc.gstin, frm.doc.country)
+                india.guess_gst_category(frm.doc.gstin, frm.doc.country)
             );
         },
     });
