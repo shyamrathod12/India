@@ -9,7 +9,7 @@ function fetch_gstins(report) {
 	}
 
 	frappe.call({
-		method:'india_compliance.gst_india.utils.get_gstin_list',
+		method:'india.gst_india.utils.get_gstin_list',
 		async: false,
 		args: {
 			party: company

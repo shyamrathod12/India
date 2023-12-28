@@ -13,10 +13,10 @@ from frappe.utils import (
 )
 from frappe.utils.file_manager import save_file
 
-from india_compliance.gst_india.api_classes.e_invoice import EInvoiceAPI
-from india_compliance.gst_india.api_classes.e_waybill import EWaybillAPI
-from india_compliance.gst_india.constants import STATE_NUMBERS
-from india_compliance.gst_india.constants.e_waybill import (
+from india.gst_india.api_classes.e_invoice import EInvoiceAPI
+from india.gst_india.api_classes.e_waybill import EWaybillAPI
+from india.gst_india.constants import STATE_NUMBERS
+from india.gst_india.constants.e_waybill import (
     ADDRESS_FIELDS,
     CANCEL_REASON_CODES,
     CONSIGNMENT_STATUS,
@@ -27,14 +27,14 @@ from india_compliance.gst_india.constants.e_waybill import (
     TRANSIT_TYPES,
     UPDATE_VEHICLE_REASON_CODES,
 )
-from india_compliance.gst_india.utils import (
+from india.gst_india.utils import (
     is_foreign_doc,
     load_doc,
     parse_datetime,
     send_updated_doc,
     update_onload,
 )
-from india_compliance.gst_india.utils.transaction_data import GSTTransactionData
+from india.gst_india.utils.transaction_data import GSTTransactionData
 
 #######################################################################################
 ### Manual JSON Generation for e-Waybill ##############################################
@@ -85,7 +85,7 @@ def enqueue_bulk_e_waybill_generation(doctype, docnames):
 
     frappe.has_permission(doctype, "submit", throw=True)
 
-    from india_compliance.gst_india.utils import is_api_enabled
+    from india.gst_india.utils import is_api_enabled
 
     gst_settings = frappe.get_cached_doc("GST Settings")
     if not is_api_enabled(gst_settings) or not gst_settings.enable_e_waybill:
@@ -93,7 +93,7 @@ def enqueue_bulk_e_waybill_generation(doctype, docnames):
 
     docnames = frappe.parse_json(docnames) if docnames.startswith("[") else [docnames]
     rq_job = frappe.enqueue(
-        "india_compliance.gst_india.utils.e_waybill.generate_e_waybills",
+        "india.gst_india.utils.e_waybill.generate_e_waybills",
         queue="long",
         timeout=len(docnames) * 240,  # 4 mins per e-Waybill
         doctype=doctype,

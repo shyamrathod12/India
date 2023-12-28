@@ -10,9 +10,9 @@ from frappe.utils import add_to_date, get_datetime, getdate, now_datetime
 from frappe.utils.data import format_date
 from erpnext.controllers.sales_and_purchase_return import make_return_doc
 
-from india_compliance.gst_india.api_classes.base import BASE_URL
-from india_compliance.gst_india.utils import load_doc
-from india_compliance.gst_india.utils.e_invoice import (
+from india.gst_india.api_classes.base import BASE_URL
+from india.gst_india.utils import load_doc
+from india.gst_india.utils.e_invoice import (
     EInvoiceData,
     cancel_e_invoice,
     generate_e_invoice,
@@ -20,8 +20,8 @@ from india_compliance.gst_india.utils.e_invoice import (
     validate_e_invoice_applicability,
     validate_if_e_invoice_can_be_cancelled,
 )
-from india_compliance.gst_india.utils.e_waybill import EWaybillData
-from india_compliance.gst_india.utils.tests import append_item, create_sales_invoice
+from india.gst_india.utils.e_waybill import EWaybillData
+from india.gst_india.utils.tests import append_item, create_sales_invoice
 
 
 class TestEInvoice(FrappeTestCase):
@@ -44,7 +44,7 @@ class TestEInvoice(FrappeTestCase):
         cls.e_invoice_test_data = frappe._dict(
             frappe.get_file_json(
                 frappe.get_app_path(
-                    "india_compliance", "gst_india", "data", "test_e_invoice.json"
+                    "india", "gst_india", "data", "test_e_invoice.json"
                 )
             )
         )

@@ -1,12 +1,12 @@
 import frappe
 
-from india_compliance.gst_india.setup import (
+from india.gst_india.setup import (
     HRMS_CUSTOM_FIELDS,
     ITEM_VARIANT_FIELDNAMES,
     get_all_custom_fields,
     get_property_setters,
 )
-from india_compliance.gst_india.utils.custom_fields import delete_custom_fields
+from india.gst_india.utils.custom_fields import delete_custom_fields
 
 
 def before_uninstall():
@@ -38,7 +38,7 @@ def delete_property_setters():
 def delete_accounting_dimension_fields():
     doctypes = frappe.get_hooks(
         "accounting_dimension_doctypes",
-        app_name="india_compliance",
+        app_name="india",
     )
 
     fieldnames = frappe.get_all("Accounting Dimension", fields=["fieldname"])

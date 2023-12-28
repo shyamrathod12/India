@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 /* eslint-disable */
 
-{% include "india_compliance/gst_india/report/utils.js" %}
+{% include "india/gst_india/report/utils.js" %}
 
 frappe.query_reports["HSN-wise-summary of outward supplies"] = {
 	"filters": [
@@ -35,7 +35,7 @@ frappe.query_reports["HSN-wise-summary of outward supplies"] = {
 			"label": __("From Date"),
 			"fieldtype": "Date",
 			"width": "80",
-			"default": india_compliance.last_month_start()
+			"default": india.last_month_start()
 		},
 		{
 			"fieldname":"to_date",
@@ -43,7 +43,7 @@ frappe.query_reports["HSN-wise-summary of outward supplies"] = {
 			"fieldtype": "Date",
 			"width": "80",
 			"mandatory_depends_on": "eval: doc.from_date",
-			"default": india_compliance.last_month_end()
+			"default": india.last_month_end()
 		},
 
 	],
@@ -54,7 +54,7 @@ frappe.query_reports["HSN-wise-summary of outward supplies"] = {
 			var filters = report.get_values();
 
 			frappe.call({
-				method: 'india_compliance.gst_india.report.hsn_wise_summary_of_outward_supplies.hsn_wise_summary_of_outward_supplies.get_json',
+				method: 'india.gst_india.report.hsn_wise_summary_of_outward_supplies.hsn_wise_summary_of_outward_supplies.get_json',
 				args: {
 					data: report.data,
 					report_name: report.report_name,
@@ -63,7 +63,7 @@ frappe.query_reports["HSN-wise-summary of outward supplies"] = {
 				callback: function(r) {
 					if (r.message) {
 						const args = {
-							cmd: 'india_compliance.gst_india.report.hsn_wise_summary_of_outward_supplies.hsn_wise_summary_of_outward_supplies.download_json_file',
+							cmd: 'india.gst_india.report.hsn_wise_summary_of_outward_supplies.hsn_wise_summary_of_outward_supplies.download_json_file',
 							data: r.message.data,
 							report_name: r.message.report_name
 						};

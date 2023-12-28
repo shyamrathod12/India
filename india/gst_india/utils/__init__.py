@@ -24,7 +24,7 @@ from frappe.utils.file_manager import get_file_path
 from erpnext.accounts.party import get_default_contact
 from erpnext.accounts.utils import get_fiscal_year
 
-from india_compliance.gst_india.constants import (
+from india.gst_india.constants import (
     ABBREVIATIONS,
     E_INVOICE_MASTER_CODES_URL,
     GST_ACCOUNT_FIELDS,
@@ -313,7 +313,7 @@ def guess_gst_category(
 
 
 def get_data_file_path(file_name):
-    return frappe.get_app_path("india_compliance", "gst_india", "data", file_name)
+    return frappe.get_app_path("india", "gst_india", "data", file_name)
 
 
 def validate_gstin_check_digit(gstin, label="GSTIN"):

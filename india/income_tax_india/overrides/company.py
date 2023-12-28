@@ -75,7 +75,7 @@ def get_tds_details(accounts, fiscal_year_details):
     tds_details = []
     tds_rules = frappe.get_file_json(
         frappe.get_app_path(
-            "india_compliance", "income_tax_india", "data", "tds_details.json"
+            "india", "income_tax_india", "data", "tds_details.json"
         )
     )
 

@@ -3,6 +3,7 @@ import frappe.defaults
 
 
 def is_audit_trail_enabled():
+    # pass
     return bool(frappe.db.get_single_value("Accounts Settings", "enable_audit_trail"))
 
 
@@ -13,7 +14,7 @@ def get_audit_trail_doctypes():
 
 def enqueue_disable_audit_trail_notification():
     frappe.enqueue(
-        "india_compliance.audit_trail.utils.disable_audit_trail_notification",
+        "india.audit_trail.utils.disable_audit_trail_notification",
         queue="short",
     )
 

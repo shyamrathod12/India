@@ -9,17 +9,17 @@ from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
     make_dimension_in_accounting_doctypes,
 )
 
-from india_compliance.gst_india.constants import GST_UOMS
-from india_compliance.gst_india.constants.custom_fields import (
+from india.gst_india.constants import GST_UOMS
+from india.gst_india.constants.custom_fields import (
     CUSTOM_FIELDS,
     E_INVOICE_FIELDS,
     E_WAYBILL_FIELDS,
     HRMS_CUSTOM_FIELDS,
     SALES_REVERSE_CHARGE_FIELDS,
 )
-from india_compliance.gst_india.setup.property_setters import get_property_setters
-from india_compliance.gst_india.utils import get_data_file_path
-from india_compliance.gst_india.utils.custom_fields import toggle_custom_fields
+from india.gst_india.setup.property_setters import get_property_setters
+from india.gst_india.utils import get_data_file_path
+from india.gst_india.utils.custom_fields import toggle_custom_fields
 
 ITEM_VARIANT_FIELDNAMES = frozenset(("gst_hsn_code", "is_nil_exempt", "is_non_gst"))
 
@@ -52,7 +52,7 @@ def create_hrms_custom_fields():
 def create_accounting_dimension_fields():
     doctypes = frappe.get_hooks(
         "accounting_dimension_doctypes",
-        app_name="india_compliance",
+        app_name="india",
     )
 
     dimensions = frappe.get_all("Accounting Dimension", pluck="name")
@@ -283,16 +283,16 @@ def setup_wizard_complete(user_input):
 
 
 def map_default_uoms(settings=None):
-    settings = settings or frappe.get_doc("GST Settings")
+    settings = settings #or frappe.get_doc("GST Settings")
 
-    def _is_uom_mapped():
-        return any(mapping.uom == uom for mapping in settings.gst_uom_map)
+    # def _is_uom_mapped():
+    #     return any(mapping.uom == uom for mapping in settings.gst_uom_map)
 
-    for uom, gst_uom in GST_UOMS.items():
-        if not frappe.db.exists("UOM", uom) or _is_uom_mapped():
-            continue
+    # for uom, gst_uom in GST_UOMS.items():
+    #     if not frappe.db.exists("UOM", uom) or _is_uom_mapped():
+    #         continue
 
-        settings.append("gst_uom_map", {"uom": uom, "gst_uom": gst_uom})
+    #     settings.append("gst_uom_map", {"uom": uom, "gst_uom": gst_uom})
 
-    for row in settings.gst_uom_map:
-        row.db_update()
+    # for row in settings.gst_uom_map:
+    #     row.db_update()

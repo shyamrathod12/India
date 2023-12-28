@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 import frappe
 
-from india_compliance.gst_india.utils.gstin_info import get_gstin_info
+from india.gst_india.utils.gstin_info import get_gstin_info
 
 
 class TestGstinInfo(unittest.TestCase):
@@ -73,7 +73,7 @@ class TestGstinInfo(unittest.TestCase):
     def setUpClass(cls):
         cls.gstin = "24AAUPV7468F1ZW"
         cls.mock_public_api_patcher = patch(
-            "india_compliance.gst_india.utils.gstin_info.PublicAPI"
+            "india.gst_india.utils.gstin_info.PublicAPI"
         )
         cls.mock_public_api = cls.mock_public_api_patcher.start()
 

@@ -5,9 +5,9 @@ from string import whitespace
 import frappe
 from frappe import _
 
-from india_compliance.gst_india.api_classes.base import BASE_URL
-from india_compliance.gst_india.api_classes.public import PublicAPI
-from india_compliance.gst_india.utils import titlecase, validate_gstin
+from india.gst_india.api_classes.base import BASE_URL
+from india.gst_india.api_classes.public import PublicAPI
+from india.gst_india.utils import titlecase, validate_gstin
 
 GST_CATEGORIES = {
     "Regular": "Registered Regular",
@@ -38,7 +38,7 @@ def _get_gstin_info(gstin, *, throw_error=True):
         try:
             response = PublicAPI().get_gstin_info(gstin)
             frappe.enqueue(
-                "india_compliance.gst_india.doctype.gstin.gstin.create_or_update_gstin_status",
+                "india.gst_india.doctype.gstin.gstin.create_or_update_gstin_status",
                 queue="long",
                 response=response,
             )

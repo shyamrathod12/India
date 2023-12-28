@@ -13,9 +13,9 @@ from frappe.utils import add_to_date, get_datetime, now_datetime, today
 from frappe.utils.data import format_date
 from erpnext.controllers.sales_and_purchase_return import make_return_doc
 
-from india_compliance.gst_india.api_classes.base import BASE_URL
-from india_compliance.gst_india.utils import load_doc
-from india_compliance.gst_india.utils.e_waybill import (
+from india.gst_india.api_classes.base import BASE_URL
+from india.gst_india.utils import load_doc
+from india.gst_india.utils.e_waybill import (
     EWaybillData,
     cancel_e_waybill,
     fetch_e_waybill_data,
@@ -23,7 +23,7 @@ from india_compliance.gst_india.utils.e_waybill import (
     update_transporter,
     update_vehicle_info,
 )
-from india_compliance.gst_india.utils.tests import (
+from india.gst_india.utils.tests import (
     _append_taxes,
     append_item,
     create_purchase_invoice,
@@ -56,7 +56,7 @@ class TestEWaybill(FrappeTestCase):
         cls.e_waybill_test_data = frappe._dict(
             frappe.get_file_json(
                 frappe.get_app_path(
-                    "india_compliance", "gst_india", "data", "test_e_waybill.json"
+                    "india", "gst_india", "data", "test_e_waybill.json"
                 )
             )
         )
@@ -330,7 +330,7 @@ class TestEWaybill(FrappeTestCase):
 
         hsn_codes = frappe.get_file_json(
             frappe.get_app_path(
-                "india_compliance", "gst_india", "data", "hsn_codes.json"
+                "india", "gst_india", "data", "hsn_codes.json"
             )
         )
         _bulk_insert_hsn_wise_items(hsn_codes)
